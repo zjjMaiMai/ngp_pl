@@ -19,7 +19,8 @@ from models.networks import NGP
 from models.rendering import render, MAX_SAMPLES
 
 # optimizer, losses
-from apex.optimizers import FusedAdam
+from torch.optim import Adam as FusedAdam
+# from apex.optimizers import FusedAdam
 from torch.optim.lr_scheduler import CosineAnnealingLR
 from losses import NeRFLoss
 
@@ -144,14 +145,14 @@ class NeRFSystem(LightningModule):
 
     def train_dataloader(self):
         return DataLoader(self.train_dataset,
-                          num_workers=16,
+                          num_workers=1,
                           persistent_workers=True,
                           batch_size=None,
                           pin_memory=True)
 
     def val_dataloader(self):
         return DataLoader(self.test_dataset,
-                          num_workers=8,
+                          num_workers=1,
                           batch_size=None,
                           pin_memory=True)
 

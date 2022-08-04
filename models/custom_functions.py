@@ -1,7 +1,7 @@
 import torch
 import vren
 from torch.cuda.amp import custom_fwd, custom_bwd
-from torch_scatter import segment_csr
+# from torch_scatter import segment_csr
 from einops import rearrange
 
 
@@ -100,17 +100,17 @@ class RayMarcher(torch.autograd.Function):
 
         return rays_a, xyzs, dirs, deltas, ts, total_samples
 
-    @staticmethod
-    @custom_bwd
-    def backward(ctx, dL_drays_a, dL_dxyzs, dL_ddirs,
-                 dL_ddeltas, dL_dts, dL_dtotal_samples):
-        rays_a, ts = ctx.saved_tensors
-        segments = torch.cat([rays_a[:, 1], rays_a[-1:, 1]+rays_a[-1:, 2]])
-        dL_drays_o = segment_csr(dL_dxyzs, segments)
-        dL_drays_d = \
-            segment_csr(dL_dxyzs*rearrange(ts, 'n -> n 1')+dL_ddirs, segments)
+    # @staticmethod
+    # @custom_bwd
+    # def backward(ctx, dL_drays_a, dL_dxyzs, dL_ddirs,
+    #              dL_ddeltas, dL_dts, dL_dtotal_samples):
+    #     rays_a, ts = ctx.saved_tensors
+    #     segments = torch.cat([rays_a[:, 1], rays_a[-1:, 1]+rays_a[-1:, 2]])
+    #     dL_drays_o = segment_csr(dL_dxyzs, segments)
+    #     dL_drays_d = \
+    #         segment_csr(dL_dxyzs*rearrange(ts, 'n -> n 1')+dL_ddirs, segments)
 
-        return dL_drays_o, dL_drays_d, None, None, None, None, None, None, None
+    #     return dL_drays_o, dL_drays_d, None, None, None, None, None, None, None
 
 
 class VolumeRenderer(torch.autograd.Function):
