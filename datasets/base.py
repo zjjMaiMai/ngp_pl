@@ -23,11 +23,11 @@ class BaseDataset(Dataset):
         if self.split.startswith('train'):
             # training pose is retrieved in train.py
             if self.ray_sampling_strategy == 'all_images': # randomly select images
-                img_idxs = np.random.choice(len(self.poses), self.batch_size)
+                img_idxs = np.random.choice(len(self.poses), self.batch_size).astype(np.int64)
             elif self.ray_sampling_strategy == 'same_image': # randomly select ONE image
-                img_idxs = np.random.choice(len(self.poses), 1)[0]
+                img_idxs = np.random.choice(len(self.poses), 1).astype(np.int64)[0]
             # randomly select pixels
-            pix_idxs = np.random.choice(self.img_wh[0]*self.img_wh[1], self.batch_size)
+            pix_idxs = np.random.choice(self.img_wh[0]*self.img_wh[1], self.batch_size).astype(np.int64)
             rays = self.rays[img_idxs, pix_idxs]
             sample = {'img_idxs': img_idxs, 'pix_idxs': pix_idxs,
                       'rgb': rays[:, :3]}
