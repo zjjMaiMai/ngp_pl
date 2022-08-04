@@ -1,8 +1,12 @@
+from .nerf import NeRFDataset
 from .nsvf import NSVFDataset
 from .colmap import ColmapDataset
 from .nerfpp import NeRFPPDataset
+from .rtmv import RTMVDataset
 
 
-dataset_dict = {'nsvf': NSVFDataset,
+dataset_dict = {'nerf': NeRFDataset,
+                'nsvf': NSVFDataset,
                 'colmap': ColmapDataset,
-                'nerfpp': NeRFPPDataset}
+                'nerfpp': NeRFPPDataset,
+                'rtmv': RTMVDataset}
